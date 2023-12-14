@@ -1,0 +1,1 @@
+export const compareLowercase = (string: string, query: string) => string.toLowerCase().includes(query.toLowerCase());
