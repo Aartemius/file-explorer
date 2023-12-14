@@ -56,32 +56,24 @@ export const removeNodeById = (data: Node[], targetId: number) => {
 
 
 export const setVisibilityByTitle = (data: Node[], targetTitle: string) => {
-  const traverse = (node: Node, isParentShown: boolean) => {
+  function traverse(node: Node): boolean {
+    node.isShown = false;
     if (compareLowercase(node.title, targetTitle)) {
       node.isShown = true;
-      isParentShown = true;
-    } else {
-      node.isShown = isParentShown;
     }
-
     if (node.children) {
       for (const child of node.children) {
-        traverse(child, child.isShown);
-        if (
-          (child.children && child.children.some(c => compareLowercase(c.title, targetTitle))) || 
-          compareLowercase(child.title, targetTitle)
-        ) {
+        if (traverse(child)) {
           node.isShown = true;
-          isParentShown = true;
-        } else if (compareLowercase(node.title, targetTitle)) {
-          node.isShown = false;
         }
       }
     }
+
+    return node.isShown;
   };
 
   data.forEach(item => {
-    traverse(item, false);
+    traverse(item);
   })
 
   return data;
