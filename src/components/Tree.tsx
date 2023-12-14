@@ -6,12 +6,14 @@ import foldersStore, { Node } from "../store/FoldersStore";
 import { setVisibilityByTitle } from "../utils/folders";
 
 const Tree = observer(() => {
-  const { folders, setFolders, isLoading } = toJS(foldersStore);
+  const { folders, setFolders, isLoading, fetchInitialFolders } = toJS(foldersStore);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     if (searchQuery) {
-      setFolders(setVisibilityByTitle(folders, searchQuery))
+      setFolders(setVisibilityByTitle(folders, searchQuery));
+    } else {
+      fetchInitialFolders();
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery]);

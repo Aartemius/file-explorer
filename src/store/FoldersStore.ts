@@ -14,7 +14,7 @@ class FoldersStore {
 
   constructor() {
     makeAutoObservable(this);
-    this.fetchData();
+    this.fetchInitialFolders();
   }
 
   private setShownRecursively(node: Node, isTopLevel: boolean) {
@@ -33,7 +33,7 @@ class FoldersStore {
     this.folders = folders;
   }
 
-  fetchData = async () => {
+  fetchInitialFolders = async () => {
     try {
       this.isLoading = true;
       const response = await fetch('foldersData/foldersData.json');
