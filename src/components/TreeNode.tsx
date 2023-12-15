@@ -2,6 +2,7 @@ import { FC } from "react";
 import foldersStore, { Node } from "../store/FoldersStore";
 import { toJS } from "mobx";
 import { toggleChildrenVisibility, removeNodeById } from "../utils/folders";
+import styles from './TreeNode.module.scss';
 
 interface TreeNodeProps {
   node: Node;
@@ -19,7 +20,7 @@ const TreeNode: FC<TreeNodeProps> = ({
   return (
     <>
       { node.isShown &&
-        <div style={{ width: 'fit-content' }}>
+        <div className={ styles.treeNodeWrap }>
           <div 
             onClick={ () => {
               if (node.type !== 'file' && node.children) {
@@ -28,12 +29,14 @@ const TreeNode: FC<TreeNodeProps> = ({
             } }
             style={{
               display: 'flex',
+              padding: '.25rem',
+              fontWeight: node.type === 'folder' ? 500 : undefined,
               cursor: node.children ? 'pointer' : undefined,
               paddingLeft
             }}
           >
             <span>{ node.title }</span>
-            {node.children &&
+            {node.children && node.type === 'folder' &&
               <img
                 src="images/expand-arrow.svg"
                 alt="expand folders"
@@ -43,7 +46,7 @@ const TreeNode: FC<TreeNodeProps> = ({
             <img
               src="images/delete-icon.svg"
               alt="delete item"
-              style={{ marginLeft: '1rem' }}
+              className={ styles.deleteIcon }
               onClick={ (e) => {
                 e.stopPropagation();
                 setFolders(removeNodeById(folders, node.id));
