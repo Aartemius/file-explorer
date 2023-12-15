@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useState } from "react";
 import TreeNode from "./TreeNode";
 import { observer } from "mobx-react-lite";
 import { toJS } from 'mobx';
@@ -9,6 +9,7 @@ import styles from './Tree.module.scss';
 const Tree = observer(() => {
   const { folders, setFolders, isLoading, fetchInitialFolders } = toJS(foldersStore);
   const [searchQuery, setSearchQuery] = useState("");
+  const [areTreeNodesRendered, setAreTreeNodesRendered] = useState(false);
 
   useEffect(() => {
     if (searchQuery) {
@@ -18,6 +19,11 @@ const Tree = observer(() => {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery]);
+
+  useLayoutEffect(() => {
+    const treeNodes = document.querySelectorAll(".treeNodeWrap");
+    setAreTreeNodesRendered(treeNodes.length > 0);
+  }, [folders]);
 
   return (
     <div>
@@ -29,19 +35,20 @@ const Tree = observer(() => {
         className={ styles.searchInput }
       />
       { isLoading && <div className={ styles.loader }>Loading...</div> }
-      { folders &&
-        <div
-          className={ styles.foldersContainer }
-        >
-          { folders.map((node: Node, index: number) => (
-            <TreeNode
-              key={ index + Date.now() }
-              node={ node }
-              depth={ 0 }
-            />
-          )) }
-        </div>
-      }
+
+      <div
+        className={ styles.foldersContainer }
+      >
+      { !areTreeNodesRendered && <div>No items found</div> }
+      { folders && folders.map((node: Node, index: number) => (
+        <TreeNode
+          key={ useId() }
+          node={ node }
+          depth={ 0 }
+        />
+      )) }
+      
+      </div>
     </div>
   );
 });

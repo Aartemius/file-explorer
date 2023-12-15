@@ -20,7 +20,7 @@ const TreeNode: FC<TreeNodeProps> = ({
   return (
     <>
       { node.isShown &&
-        <div className={ styles.treeNodeWrap }>
+        <div className={ `${styles.treeNodeWrap} treeNodeWrap` }>
           <div 
             onClick={ () => {
               if (node.type !== 'file' && node.children) {
