@@ -1,7 +1,20 @@
 .treeNodeWrap {
   width: fit-content;
-  .deleteIcon {
-    cursor: pointer;
-    margin-left: 1rem;
+  .treeNode {
+    display: flex;
+    padding: .35rem;
+    align-items: center;
+    span {
+      user-select: none;
+    }
+    .explorerIcon {
+      height: 1rem;
+      margin-right: .5rem;
+    }
+    .deleteIcon {
+      cursor: pointer;
+      margin-left: .75rem;
+      height: 1rem;
+    }
   }
 }

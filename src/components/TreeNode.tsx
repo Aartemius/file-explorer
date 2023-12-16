@@ -15,7 +15,7 @@ const TreeNode: FC<TreeNodeProps> = ({
 }) => {
   const { folders, setFolders } = toJS(foldersStore);
   const paddingLeft = `${1 + depth}rem`;
-  const isChildrenVisible = (node: Node) => node.children?.some((child: Node) => child.isShown)
+  const isChildrenVisible = (node: Node) => node.children?.some((child: Node) => child.isShown);
   
   return (
     <>
@@ -24,23 +24,33 @@ const TreeNode: FC<TreeNodeProps> = ({
           <div 
             onClick={ () => {
               if (node.type !== 'file' && node.children) {
-                setFolders(toggleChildrenVisibility(folders, node.id))
+                setFolders(toggleChildrenVisibility(folders, node.id));
               }
-            } }
+            }}
+            className={ styles.treeNode }
             style={{
-              display: 'flex',
-              padding: '.25rem',
               fontWeight: node.type === 'folder' ? 500 : undefined,
               cursor: node.children ? 'pointer' : undefined,
               paddingLeft
             }}
           >
+            <img
+              className={ styles.explorerIcon }
+              src={ node.type === 'file' ? 
+                'images/file-icon.svg' :
+                isChildrenVisible(node) ? 'images/folder-open-icon.svg' : 'images/folder-icon.svg' 
+              }
+              alt={ `${node.title}` }
+            /> 
             <span>{ node.title }</span>
             {node.children && node.type === 'folder' &&
               <img
                 src="images/expand-arrow.svg"
                 alt="expand folders"
-                style={{ transform: isChildrenVisible(node) ? 'rotate(180deg)' : undefined }}
+                style={{
+                  transform: isChildrenVisible(node) ? 'rotate(180deg)' : undefined,
+                  width: '1rem'
+                }}
               /> 
             }
             <img
