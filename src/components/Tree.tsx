@@ -1,4 +1,4 @@
-import { useEffect, useId, useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import TreeNode from "./TreeNode";
 import { observer } from "mobx-react-lite";
 import { toJS } from 'mobx';
@@ -42,7 +42,7 @@ const Tree = observer(() => {
       { !areTreeNodesRendered && <div>No items found</div> }
       { folders && folders.map((node: Node, index: number) => (
         <TreeNode
-          key={ useId() }
+          key={ index + Date.now() }
           node={ node }
           depth={ 0 }
         />
