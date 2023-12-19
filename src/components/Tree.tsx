@@ -7,7 +7,12 @@ import { setVisibilityByTitle } from "../utils/folders";
 import styles from './Tree.module.scss';
 
 const Tree = observer(() => {
-  const { folders, setFolders, isLoading, fetchInitialFolders } = toJS(foldersStore);
+  const { 
+    folders, 
+    setFolders, 
+    isLoading, 
+    setInitialFolders 
+  } = toJS(foldersStore);
   const [searchQuery, setSearchQuery] = useState("");
   const [areTreeNodesRendered, setAreTreeNodesRendered] = useState(false);
 
@@ -15,7 +20,7 @@ const Tree = observer(() => {
     if (searchQuery) {
       setFolders(setVisibilityByTitle(folders, searchQuery));
     } else {
-      fetchInitialFolders();
+      setInitialFolders(folders);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery]);
